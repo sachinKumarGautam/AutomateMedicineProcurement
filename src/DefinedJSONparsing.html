@@ -1,0 +1,88 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type = "text/babel">
+
+  const rootElement = document.getElementById('root')
+
+  class App extends React.Component {
+
+    constructor(props){
+      super(props)
+      this.state = {
+        content: []
+      }
+    }
+
+    storeToState = (event) => {
+      event.preventDefault()
+
+      let list = []
+
+      let obj = [
+        {
+          name: 'N',
+          age: 19
+        },
+        {
+          name: 'R',
+          age: 25
+        },
+        {
+          name: 'D',
+          age: 23
+        },
+        {
+          name: 'M',
+          age: 19
+        }
+      ]
+
+      obj.forEach((element) => {
+        list.push({name: element.name, age: element.age})
+      })
+
+      this.setState({
+        content: list
+      })
+
+    }
+
+    render(){
+      return(
+        <div>
+          <div>
+            <form>
+              <button onClick = {this.storeToState.bind(this)}>Click Me</button>
+            </form>
+          </div>
+          <div>
+            <table>
+              <tbody>{
+                this.state.content.map(function(element,i){
+                  return (
+                    <tr key = {i}>
+                      <td><b>{element.name}</b></td>
+                      <td>{element.age}</td>
+                    </tr>
+                  )
+                })
+              }</tbody>
+            </table>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+    <App />,rootElement
+  )
+  </script>
+</head>
+<body>
+  <div id = "root"></div>
+</body>
+</html>

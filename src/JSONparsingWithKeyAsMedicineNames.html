@@ -1,0 +1,99 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type = "text/babel">
+
+
+  class App extends React.Component {
+
+    /*JSON parsing with KEY as MEDICINE NAMES and respective VALUE as their details
+    Store this as a txt file and upload it in the input field
+    {
+      "NADOXIN CREAM" : {
+        "PACK": "10GM",
+        "BATCH": "28Q0036",
+        "COMPANY": "WOCKHARDT LIMITED ",
+        "classification_code": "HD",
+        "EXPIRY": "10/19",
+        "Salts": "Nadifloxacin",
+        "MRP": 101.5,
+        "QTY": 4
+      },
+      "NADOXIN" : {
+        "PACK": "10GM",
+        "BATCH": "28Q0036",
+        "COMPANY": "WOCKHARDT LIMITED ",
+        "classification_code": "HD",
+        "EXPIRY": "10/19",
+        "Salts": "Nadifloxacin",
+        "MRP": 101.5,
+        "QTY": 4
+      }
+    }*/
+
+    //*************** Intializing *******************
+    constructor(props){
+      super(props)
+      this.state = {
+        content: []
+      }
+    }
+
+    //*************** Readind a file and converting it into JSON format ******************
+
+    uploadFile = (event) => {
+      event.preventDefault()
+        let file = event.target.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (event) => {
+          let data = JSON.parse(event.target.result)
+
+          console.log(data)
+
+          this.setState({
+            content: data
+          })
+        }
+    }
+
+    render() {
+      return (
+        <div>
+          <div>
+            <input type = 'file' name = 'myFile' onChange={this.uploadFile} />
+          </div>
+          <div>{
+            Object.entries(this.state.content).map(([key,value]) => {
+              return (
+                <div key = {key} style = {{padding: 20}}>
+                  <div>Name: <b>{key}</b></div>
+                  <div>Pack: {value['PACK']}</div>
+                  <div>Batch: {value['BATCH']}</div>
+                  <div>Company: {value['COMPANY']}</div>
+                  <div>Classification Code: {value['classification_code']}</div>
+                  <div>Expiry: {value['EXPIRY']}</div>
+                  <div>MRP: {value['MRP']}</div>
+                  <div>Medicine Name: {value['Medicine Name']}</div>
+                  <div>Quantity: {value['QTY']}</div>
+                  <div>Salts: {value['Salts'] && value['Salts'].map(el => <span key={el}> {el} </span>)}</div>
+                </div>
+              )
+            })
+          }</div>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+    <App />,document.getElementById('root')
+  )
+  </script>
+</head>
+<body>
+  <div id = "root"></div>
+</body>
+</html>

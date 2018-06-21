@@ -1,0 +1,70 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type = "text/babel">
+
+
+  class App extends React.Component {
+
+    /* JSON parsing with only 1 medicine details as a object */
+
+    //*************** Intializing *******************
+    constructor(props){
+      super(props)
+      this.state = {
+        content: []
+      }
+    }
+
+    //*************** Readind a file and converting it into JSON format ******************
+
+    uploadFile = (event) => {
+      event.preventDefault()
+        let file = event.target.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (event) => {
+          let data = JSON.parse(event.target.result)
+
+          console.log(data)
+
+          this.setState({
+            content: data
+          })
+        }
+    }
+
+    render() {
+      return (
+        <div>
+          <div>
+            <input type="file" name="myFile" onChange={this.uploadFile} />
+          </div>
+          <div>
+            <div>Pack: {this.state.content['PACK']}</div>
+            <div>Batch: {this.state.content['BATCH']}</div>
+            <div>Company: {this.state.content['COMPANY']}</div>
+            <div>Classification Code: {this.state.content['classification_code']}</div>
+            <div>Expiry: {this.state.content['EXPIRY']}</div>
+            <div>MRP: {this.state.content['MRP']}</div>
+            <div>Medicine Name: {this.state.content['Medicine Name']}</div>
+            <div>Quantity: {this.state.content['QTY']}</div>
+            <div>Salts: {this.state.content['Salts'] && this.state.content['Salts'].map(el => <span key={el}> {el} </span>)}</div>
+
+          </div>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+    <App />,document.getElementById('root')
+  )
+  </script>
+</head>
+<body>
+  <div id = "root"></div>
+</body>
+</html>

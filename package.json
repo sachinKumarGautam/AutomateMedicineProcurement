@@ -1,0 +1,29 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.2.1",
+    "@material-ui/icons": "^1.1.0",
+    "axios": "^0.18.0",
+    "fast-csv": "^2.4.1",
+    "material-ui": "^0.20.1",
+    "material-ui-datatables": "^0.18.2",
+    "papaparse": "^4.5.0",
+    "ramda": "^0.25.0",
+    "react": "^16.4.0",
+    "react-csv": "^1.0.14",
+    "react-csv-reader": "^0.3.2",
+    "react-dom": "^16.4.0",
+    "react-file-reader": "^1.1.4",
+    "react-router": "^4.3.1",
+    "react-scripts": "1.1.4",
+    "yarn": "^1.7.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
