@@ -266,7 +266,7 @@ class EnhancedTable extends React.Component {
         />
       <ResponsiveDialog />
        
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected = {selected.length} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
