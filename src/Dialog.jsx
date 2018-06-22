@@ -11,14 +11,27 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 export class ResponsiveDialog extends React.Component {
   state = {
     open: false,
+    batch_no: "",
   };
 
-  handleClickOpen = () => {
+  handleClickOpen = (n) => {
     this.setState({ open: true });
+    this.setState({batch_no: n.BATCH});
+    console.log(n);
   };
 
-  handleClose = () => {
+  handleClose = (name) => {
     this.setState({ open: false });
+    if(name=="confirm"){
+      console.log("confirmed");
+
+    }
+    // if(name=="cancel"){
+    //   this.setState((prevState) => 
+    //   ({[prevState.id] : null}))
+    //   console.log(this.state.id);
+    // }
+     
   };
 
   render() {
@@ -33,19 +46,20 @@ export class ResponsiveDialog extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="responsive-dialog-title"
         >
-          <DialogTitle id="responsive-dialog-title">{"Use Google's location service?"}</DialogTitle>
+          <DialogTitle id="responsive-dialog-title">{"Please confirm the Batch No.:?"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Let Google help apps determine location. This means sending anonymous location data to
-              Google, even when no apps are running.
+              Batch No.: {this.state.batch_no}
+              {/* Let Google help apps determine location. This means sending anonymous location data to
+              Google, even when no apps are running. */}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Disagree
+            <Button name="cancel" onClick={this.handleClose.bind(this, 'cancel')} color="primary">
+              Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
-              Agree
+            <Button name="confirm" onClick={this.handleClose.bind(this, 'confirm')} color="primary" autoFocus>
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>

@@ -217,25 +217,27 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, id) => {
+  handleClick = (event, id, n) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+    newSelected.push(id);
+    
+    // if (selectedIndex === -1) { 
+    //   newSelected = newSelected.concat(selected, id);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(
+    //     selected.slice(0, selectedIndex),
+    //     selected.slice(selectedIndex + 1),
+    //   );
+    // }
 
     this.setState({ selected: newSelected });
+    this.refs.child.handleClickOpen(n);
   };
 
   handleChangePage = (event, page) => {
@@ -264,7 +266,7 @@ class EnhancedTable extends React.Component {
         }
       }
         />
-      <ResponsiveDialog />
+      < ResponsiveDialog ref="child"  />
        
         <EnhancedTableToolbar numSelected = {selected.length} />
         <div className={classes.tableWrapper}>
@@ -284,15 +286,18 @@ class EnhancedTable extends React.Component {
                 .map(n => {
                   const isSelected = this.isSelected(n.BATCH);
                   return (
-                    <TableRow
+                    
+                   
+                    <TableRow 
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      onClick={event => this.handleClick(event, n.BATCH,n)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
                     >
+                   
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
@@ -308,6 +313,7 @@ class EnhancedTable extends React.Component {
                       <TableCell numeric>{n.MRP}</TableCell>
                       
                     </TableRow>
+                   
                   );
                 })}
               {emptyRows > 0 && (
