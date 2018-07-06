@@ -14,7 +14,7 @@ import SimpleTable from './SimpleTable';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'      , 
   },
   textField: {
     marginLeft: theme.spacing.unit,
