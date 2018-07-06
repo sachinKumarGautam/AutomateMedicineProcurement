@@ -18,10 +18,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import {CSVFileUploader} from './CSVUpload';
-import {ResponsiveDialog} from './Dialog';
-let counter = 0;
 
+let counter = 0;
+function createData(name, calories, fat, carbs, protein) {
+  counter += 1;
+  return { id: counter, name, calories, fat, carbs, protein };
+}
 
 function getSorting(order, orderBy) {
   return order === 'desc'
@@ -30,21 +32,18 @@ function getSorting(order, orderBy) {
 }
 
 const columnData = [
-  { id: 'item_name', numeric: false, disablePadding: true, label: 'Item Name' },
-  { id: 'company_name', numeric: false, disablePadding: false, label: 'Company' },
-  { id: 'pack', numeric: false, disablePadding: false, label: 'Pack' },
-  { id: 'batch', numeric: false, disablePadding: false, label: 'Batch' },
-  { id: 'expiry', numeric: false, disablePadding: false, label: 'Expiry' },
-  { id: 'qty', numeric: true, disablePadding: false, label: 'QTY' },
-  { id: 'mrp', numeric: true, disablePadding: false, label: 'MRP' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
 class EnhancedTableHead extends React.Component {
-
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
-  
+
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
 
@@ -65,7 +64,7 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 padding={column.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === column.id ? order : false}
-              > 
+              >
                 <Tooltip
                   title="Sort"
                   placement={column.numeric ? 'bottom-end' : 'bottom-start'}
@@ -140,7 +139,7 @@ let EnhancedTableToolbar = props => {
           <Typography variant="title" id="tableTitle">
             Nutrition
           </Typography>
-        )}  
+        )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -188,16 +187,28 @@ class EnhancedTable extends React.Component {
 
     this.state = {
       order: 'asc',
-      orderBy: 'ITEM NAME',
+      orderBy: 'calories',
       selected: [],
-      obj: {},
-      data: [],
-      page: 0,               
-      rowsPerPage: 5,        
-    };                       
-  
-    
-  }                   
+      data: [
+        createData('Cupcake', 305, 3.7, 67, 4.3),
+        createData('Donut', 452, 25.0, 51, 4.9),
+        createData('Eclair', 262, 16.0, 24, 6.0),
+        createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+        createData('Gingerbread', 356, 16.0, 49, 3.9),
+        createData('Honeycomb', 408, 3.2, 87, 6.5),
+        createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+        createData('Jelly Bean', 375, 0.0, 94, 0.0),
+        createData('KitKat', 518, 26.0, 65, 7.0),
+        createData('Lollipop', 392, 0.2, 98, 0.0),
+        createData('Marshmallow', 318, 0, 81, 2.0),
+        createData('Nougat', 360, 19.0, 9, 37.0),
+        createData('Oreo', 437, 18.0, 63, 4.0),
+      ],
+      page: 0,
+      rowsPerPage: 5,
+    };
+  }
+
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -217,27 +228,25 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, id, n) => {
+  handleClick = (event, id) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-    newSelected.push(id);
-    
-    // if (selectedIndex === -1) { 
-    //   newSelected = newSelected.concat(selected, id);
-    // } else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1),
-    //   );
-    // }
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
 
     this.setState({ selected: newSelected });
-    this.refs.child.handleClickOpen(n);
   };
 
   handleChangePage = (event, page) => {
@@ -257,18 +266,7 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-      <CSVFileUploader 
-        onDataLoaded={(obj)=>{
-           this.setState({
-             obj: obj,
-             data: obj,
-          });
-        }
-      }
-        />
-      < ResponsiveDialog ref="child"  />
-       
-        <EnhancedTableToolbar numSelected = {selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -284,36 +282,28 @@ class EnhancedTable extends React.Component {
                 .sort(getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.BATCH);
+                  const isSelected = this.isSelected(n.id);
                   return (
-                    
-                   
-                    <TableRow 
+                    <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.BATCH,n)}
+                      onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
                     >
-                   
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
-                        {n['ITEM NAME']}
+                        {n.name}
                       </TableCell>
-                     
-                      <TableCell>{n.COMPANY}</TableCell>
-                      <TableCell>{n.PACK}</TableCell>
-                      <TableCell>{n.BATCH}</TableCell>
-                      <TableCell>{n.EXPIRY}</TableCell>
-                      <TableCell numeric>{n.QTY}</TableCell>
-                      <TableCell numeric>{n.MRP}</TableCell>
-                      
+                      <TableCell numeric>{n.calories}</TableCell>
+                      <TableCell numeric>{n.fat}</TableCell>
+                      <TableCell numeric>{n.carbs}</TableCell>
+                      <TableCell numeric>{n.protein}</TableCell>
                     </TableRow>
-                   
                   );
                 })}
               {emptyRows > 0 && (
