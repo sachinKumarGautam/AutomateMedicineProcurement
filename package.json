@@ -7,8 +7,11 @@
     "@material-ui/icons": "^1.1.0",
     "axios": "^0.18.0",
     "fast-csv": "^2.4.1",
+    "lodash.orderby": "^4.6.0",
     "material-ui": "^0.20.1",
     "material-ui-datatables": "^0.18.2",
+    "material-ui-fullscreen-dialog": "^1.0.0",
+    "material-ui-search-bar": "^1.0.0-beta.7",
     "papaparse": "^4.5.0",
     "ramda": "^0.25.0",
     "react": "^16.4.0",
@@ -16,8 +19,11 @@
     "react-csv-reader": "^0.3.2",
     "react-dom": "^16.4.0",
     "react-file-reader": "^1.1.4",
+    "react-popout": "^1.0.1",
+    "react-popup": "^0.9.3",
     "react-router": "^4.3.1",
     "react-scripts": "1.1.4",
+    "reactjs-popup": "^1.1.1",
     "yarn": "^1.7.0"
   },
   "scripts": {
@@ -25,5 +31,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }
