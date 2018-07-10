@@ -18,9 +18,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SearchBar from 'material-ui-search-bar';
-import PopoutWindow from 'react-popout'
-import FormDialog from './dialog.jsx';
-import FullScreenDialog from './fullscreendialog';
+import FormDialog from './FormDialog.jsx';
+import FullScreenDialog from './FullScreenDialog.jsx';
 
 const styles = theme => ({
   root: {
@@ -28,7 +27,6 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
   table: {
-    // paddingLeft: theme.spacing.unit *3,
     // minWidth: 350,
     height: "100px",
     padding: "none",
@@ -36,27 +34,11 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
-  // row: {
-  //   '&:nth-of-type(odd)': {
-  //     backgroundColor: theme.palette.background.default,
-  //   },
-  // },
 });
 
-// const CustomTableCell = withStyles(theme => ({
-//   head: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   body: {
-//     fontSize: 14,
-//   },
-// }))(CustomTableCell);
-
-class CustomizedTable extends React.Component {
+class VerifiedTable extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       ans: [],
       finalrows: [],
@@ -106,23 +88,16 @@ class CustomizedTable extends React.Component {
   removerow = (event, id, n) => {
     n.verified = false;
     this.props.val(n)
-    // var contacts =[...this.state.finalrows];
     const contacts = this.state.finalrows.filter((row) => row.verified === true);
     this.setState({
       finalrows: contacts,
       ans: contacts
-    });
-    console.log(n.verified);
-    console.log(contacts);
-    console.log(this.state.ans)
-    
-    // this.state.finalrows.filter(item=>item.verified===undefined || item.verified===false) 
+    }); 
   }
   selection(n)
   {
     this.setState({
       editedrow: n
-      
     })
     var contacts = this.state.finalrows.filter((row) => row.BATCH !==n.BATCH);
     const arrays=[...contacts, n]
@@ -159,7 +134,6 @@ class CustomizedTable extends React.Component {
     const { finalrows, ans} = this.state;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, ans.length - page * rowsPerPage);
-    // console.log(this.state.finalrows);
     return (
       <Paper className={classes.root}>
       <FormDialog ref="child" editnow={this.selection.bind(this)}/>
@@ -242,18 +216,16 @@ class CustomizedTable extends React.Component {
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
-        
       </Paper>
     );
   }
 }
 
-CustomizedTable.propTypes = {
+VerifiedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CustomizedTable);
-
+export default withStyles(styles)(VerifiedTable);
 
   // compareBy = (key) => {
   //   return function (a, b) {

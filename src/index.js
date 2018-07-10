@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CSVFileUploader from './filereader.jsx';
+import CSVFileUploader from './CSVFileUploader.jsx';
 // import App from './Form/App.jsx';
 import registerServiceWorker from './registerServiceWorker';
    

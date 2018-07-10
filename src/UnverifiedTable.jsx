@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import SearchBar from 'material-ui-search-bar';
-import FormDialog from './dialog.jsx';
+import FormDialog from './FormDialog.jsx';
 
 function getSorting(order, orderBy) {
   return order === 'desc'
@@ -36,31 +36,6 @@ const columnData = [
   { id: 'QTY', numeric: false, disablePadding: true, label: 'QTY' },
   { id: 'MRP', numeric: false, disablePadding: true, label: 'MRP' },
 ];
-
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-     minWidth: 800,
-     height: "100px"
-  },
-  tableWrapper: {
-    overflowX: 'auto',
-  },
-  tablecell: {
-    paddingRight: '10px',
-  },
-  rowcolor: {
-    // '&:nth-child(1)' : {
-    //   backgroundColor: "#707070"
-    // },
-    // '&:nth-of-type(this.state.final[nth].QTY===0)':{
-    backgroundColor: "#0000FF",
-  // },
-  },
-});
 
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
@@ -157,31 +132,17 @@ let EnhancedTableToolbar = props => {
       })}
     >
       <div className={classes.title}>
-        {/* {numSelected > 0 ? (
-          <Typography color="inherit" variant="subheading">
-            {"1"} selected
-          </Typography>
-        ) : ( */}
           <Typography variant="title" id="tableTitle">
             Invoice (Unverified Table)
           </Typography>
-        {/* )} */}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
-        {/* {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : ( */}
           <Tooltip title="Filter list">
             <IconButton aria-label="Filter list">
               <FilterListIcon />
             </IconButton>
           </Tooltip>
-        {/* )} */}
       </div>
     </Toolbar>
   );
@@ -194,7 +155,30 @@ EnhancedTableToolbar.propTypes = {
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
-class EnhancedTable extends React.Component { 
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+  },
+  table: {
+     minWidth: 800,
+     height: "100px"
+  },
+  tableWrapper: {
+    overflowX: 'auto',
+  },
+  tablecell: {
+    paddingRight: '10px',
+  },
+  rowcolor: {
+    // '&:nth-child(1)' : {
+    //   backgroundColor: "#707070"
+    // },
+    backgroundColor: "#0000FF",
+  },
+});
+
+class UnverifiedTable extends React.Component { 
   constructor(props) {
     super(props);
 
@@ -203,15 +187,12 @@ class EnhancedTable extends React.Component {
       order: 'asc',
       orderBy: 'ITEM NAME',
       selected: "",
-      ans: [],
+      // ans: [],
       final: [],
       page: 0,
       rowsPerPage: 5,
       Selectrows: {},
-      array: [],
-      color: '',
     };
-
     this.selection = this.selection.bind(this);
   }
 
@@ -223,8 +204,6 @@ componentDidUpdate(prevProps) {
       res: this.props.items
     })
   }
-  // console.log('kapil sharma',this.props.itemtopush)
-  // console.log('kapil',prevProps.itemtopush)
   if (this.props.itemtopush !== prevProps.itemtopush ) {
     for (let i=0; i<this.state.final.length; i++)
     {
@@ -232,13 +211,12 @@ componentDidUpdate(prevProps) {
         var rows=this.state.final[i];
         rows.verified=false;
         rows.QTY=Number(rows.QTY) + Number(this.props.itemtopush.QTY);
-        var order =[...this.state.final];
-        order.splice(i, 1, rows);
+        var contacts =[...this.state.final];
+        contacts.splice(i, 1, rows);
         console.log("see", rows);
         this.setState({
-          final: order,
+          final: contacts,
         })
-        console.log("rahul",this.state.final)
       }  
   }
 }
@@ -287,14 +265,12 @@ componentDidUpdate(prevProps) {
         var rows=this.state.final[i];
         rows.verified=true;
         rows.QTY=Number(rows.QTY)-Number(n.QTY)
-        var order =[...this.state.final];
-        order.splice(i, 1, rows);
+        var contatcs =[...this.state.final];
+        contatcs.splice(i, 1, rows);
         this.setState({
-          final: order,
+          final: contatcs,
         })
       }
-      // var newColor = this.state.final[i].QTY == '0' ? '#707070' : '';
-      // this.setState({ color : newColor})
     }
   }
 
@@ -333,7 +309,6 @@ componentDidUpdate(prevProps) {
     const { classes, items } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, final} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, final.length - page * rowsPerPage);
-    // <CustomizedTable ref="child"/>
     return (
       <Paper className={classes.root} >
         <SearchBar
@@ -349,7 +324,6 @@ componentDidUpdate(prevProps) {
         <FormDialog ref="child" update= {this.selection}/>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
-        
           <Table className={classes.table} aria-labelledby="tableTitle" >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -425,11 +399,11 @@ componentDidUpdate(prevProps) {
     );
 }
 }
-EnhancedTable.propTypes = {
+UnverifiedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default withStyles(styles)(UnverifiedTable);
 
 
 //   componentDidMount() {

@@ -9,7 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import RaisedButton from "material-ui/RaisedButton";
 
 const styles = theme => ({
   container: {
@@ -32,7 +31,7 @@ class FormDialog extends React.Component {
     this.state = {
       open: false,
       verify: false,
-      x: {},
+      originalrow: {},
       y: {},
       QTYError: "",
       error: false,
@@ -51,7 +50,7 @@ class FormDialog extends React.Component {
     this.setState({ 
       open: true,
       y: n,
-      x: n,
+      originalrow: n,
     })
   }
 
@@ -67,7 +66,7 @@ class FormDialog extends React.Component {
   else {
     isError = false;
     this.setState({
-      QTYError: this.state.x.QTY,
+      QTYError: this.state.originalrow.QTY,
       error: false,
     });
   }
@@ -176,7 +175,7 @@ class FormDialog extends React.Component {
                 helperText={this.state.QTYError}
                 error={this.state.error}
                 onChange={e => this.change(e, "QTY")}
-                placeholder={this.state.x.QTY}
+                placeholder={this.state.originalrow.QTY}
                 value={this.state.y['QTY']}
                 floatingLabelFixed
               />

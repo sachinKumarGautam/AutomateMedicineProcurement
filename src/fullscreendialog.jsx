@@ -102,9 +102,7 @@ class FullScreenDialog extends React.Component {
         open: false,
         order: 'asc',
         orderBy: 'ITEM NAME',
-        // searchedrow: {},
     };
-    // this.handleClickOpen = this.handleClickOpen.bind(this);
 }
 
     handleClickOpen = () => {
@@ -184,11 +182,9 @@ class FullScreenDialog extends React.Component {
                                                 {Number(searchedrow[0].QTY) + Number(n.QTY)}
                                                 </root>
                                             </TableCell>
-
                                             <TableCell >{n.MRP}</TableCell>
                                         </TableRow>
                                     );
-
                                 })}
                         </TableBody>
                     </Table>
@@ -203,36 +199,3 @@ FullScreenDialog.propTypes = {
 };
 
 export default withStyles(styles)(FullScreenDialog);
-
-// import React from 'react';
-// import FullscreenDialog from 'material-ui-fullscreen-dialog'
-
-// export default class Fullscreendialog extends React.Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             open: false,
-//         }
-//     }
-//     handleopen = (n) => {
-//         this.setState({ 
-//           open: true,
-//         })
-//     }
-//     render() {
-//         const { classes } = this.props;
-//         return (
-//             <div>
-//                 <FullscreenDialog
-//                     open={this.state.open}
-//                     onRequestClose={() => this.setState({ open: false })}
-//                     title={'Demo dialog'}
-//                     // actionButton={<FlatButton
-//                     //     label='Done'
-//                     //     onClick={() => this.setState({ open: false })}
-//                 >
-//                 </FullscreenDialog>
-//             </div>
-//         );
-//     }
-// }

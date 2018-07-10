@@ -8,11 +8,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FileUploadIcon from '@material-ui/icons/FileUpload';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CSSGrid from './grid.jsx';
-import FormDialog from './dialog.jsx';
+import CSSGrid from './CSSGrid.jsx';
 
 const styles = theme => ({
     buttonalign: {
+        // margin: theme.spacing.unit *3,
         display: 'flex',
         justifyContent: 'space-between',
     },
@@ -25,10 +25,8 @@ class CSVFileUploader extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            res: [],
-            ans: [],
+            wholetable: [],
             dropdownlist: [],
-            // showPopup: false
         }
     }
     componentDidMount() {
@@ -68,8 +66,7 @@ class CSVFileUploader extends React.Component {
             }
         }
         this.setState({
-            res: output,
-            ans: output,
+            wholetable: output,
             dropdownlist: dropdowncontent,
         })
     }
@@ -96,7 +93,7 @@ class CSVFileUploader extends React.Component {
                 height='28px' padding-left= '100px'
                 list="languages" placeholder="  medicine name..." /> */}
                 <div>
-                    {this.state.ans && <CSSGrid item={this.state.ans} />}
+                    {this.state.wholetable && <CSSGrid datatable={this.state.wholetable} />}
                 </div>
                 <div className={classes.buttonalign}>
                     <Button variant="contained" color="default" className={classes.button}
@@ -123,21 +120,23 @@ export default withStyles(styles)(CSVFileUploader);
 //         return (<li>{JSON.stringify(item)}</li>);
 //     });
 // }
-    // togglePopup() {
-    //     this.setState({
-    //         showPopup: !this.state.showPopup
-    //     });
-    // }
-    // handleKeyPress=(event)=> {
-    //     if (event.keyCode === 13) {
-    //         this.refs.email.focus();
-    //     }
-    // }
+// showPopup: false
 
-    // onKeyPress={this.handleKeyPress}
-                    // ref='name'
-                    
-    {/* <div className={classes.pop}>
+// togglePopup() {
+//     this.setState({
+//         showPopup: !this.state.showPopup
+//     });
+// }
+// handleKeyPress=(event)=> {
+//     if (event.keyCode === 13) {
+//         this.refs.email.focus();
+//     }
+// }
+
+// onKeyPress={this.handleKeyPress}
+// ref='name'
+
+{/* <div className={classes.pop}>
                     <button onClick={this.togglePopup.bind(this)}>show popup</button>
                    {this.state.showPopup ?
                         <Popup
@@ -147,6 +146,6 @@ export default withStyles(styles)(CSVFileUploader);
                         : null
                     }
                 </div> */}
-                {/* <Popup trigger={<button> Trigger</button>} position="right center">
+{/* <Popup trigger={<button> Trigger</button>} position="right center">
                     <div>Popup content here !!</div>
                 </Popup> */}
