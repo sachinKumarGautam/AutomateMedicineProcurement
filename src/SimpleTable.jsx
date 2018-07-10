@@ -160,9 +160,11 @@ componentDidUpdate(prevProps) {
     this.setState({
       data1:order,
       ans1:order, 
-    }) 
+    }, ()=>{
+      this.props.righty(this.state.ans1);
+    }); 
   }
-  this.props.righty(this.state.ans1);
+  // this.props.righty(this.state.ans1);
   console.log(this.state.data1);
 } 
 removeRow=(event, id, n)=>{

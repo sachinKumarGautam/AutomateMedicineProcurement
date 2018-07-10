@@ -236,7 +236,7 @@ class EnhancedTable extends React.Component {
         }
       }
     }
-    
+
   //   if(this.props.obj!==prevProps.obj){
   //     this.setState({
   //       obj: this.props.obj,
@@ -433,10 +433,15 @@ class EnhancedTable extends React.Component {
               data: obj,
               ans: obj,
               modifyData: obj,
-            });
-            this.props.lefty(obj);
+            }, () => {
+              this.props.lefty(obj);
+            }
+          );
+            // this.props.lefty(obj);
           }
+          
           }
+          
         />
       </div>
     );

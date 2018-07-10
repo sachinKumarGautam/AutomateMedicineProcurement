@@ -19,7 +19,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
+    width: 250,
   },
   menu: {
     width: 200,
@@ -53,7 +53,8 @@ export class ResponsiveDialog extends React.Component {
     console.log(this.state.errorText);
       if(qty.length>=1){
         this.setState({
-          errorText: this.state.data.QTY
+          errorText: this.state.data.QTY,
+          error: false
         })
       }
       else{
