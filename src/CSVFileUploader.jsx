@@ -9,10 +9,10 @@ import Button from '@material-ui/core/Button';
 import FileUploadIcon from '@material-ui/icons/FileUpload';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CSSGrid from './CSSGrid.jsx';
+import logo from './lifcare.png';
 
 const styles = theme => ({
     buttonalign: {
-        // margin: theme.spacing.unit *3,
         display: 'flex',
         justifyContent: 'space-between',
     },
@@ -83,6 +83,7 @@ class CSVFileUploader extends React.Component {
                     // autofocus={true}
                     inputId="input"
                 />
+                <img src={logo} width="100" height="50" paddingLeft="800px"/>
                 {/* <datalist id="languages">
                     {this.state.dropdownlist.map((item) => {
                         return <option key={item.BATCH} value={item}/>

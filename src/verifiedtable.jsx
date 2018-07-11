@@ -28,8 +28,8 @@ const styles = theme => ({
   },
   table: {
     // minWidth: 350,
-    height: "100px",
-    padding: "none",
+    // height: "100px",
+    // padding: "none",
   },
   tableWrapper: {
     overflowX: 'auto',
@@ -157,6 +157,7 @@ class VerifiedTable extends React.Component {
                   // onClick={() => this.sortBy('ITEM NAME')}
                   >ITEM NAME</TableCell>
                 <TableCell >BATCH</TableCell>
+                <TableCell>QTY</TableCell>
                 <TableCell >DELETE</TableCell>
               </TableRow>
             </TableHead>
@@ -179,6 +180,7 @@ class VerifiedTable extends React.Component {
                         {n['ITEM NAME']}
                       </TableCell>
                       <TableCell>{n.BATCH}</TableCell>
+                      <TableCell>{n.QTY}</TableCell>
                       <TableCell
                         hover
                         onClick={event => this.removerow(event, n.BATCH, n)}>

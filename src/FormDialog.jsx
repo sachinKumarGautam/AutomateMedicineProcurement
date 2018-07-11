@@ -33,8 +33,8 @@ class FormDialog extends React.Component {
       verify: false,
       originalrow: {},
       y: {},
-      QTYError: "",
-      error: false,
+      Error_obj: {},
+      error: {},
     };
   }
 
@@ -54,38 +54,45 @@ class FormDialog extends React.Component {
     })
   }
 
-  validate = () => {
-  let isError = false;
-  if (this.state.y.QTY==='') {
-    isError = true;
-    this.setState({
-      QTYError: "Requires valid entry",
-      error: true,
+  validate = (name) => {
+  if (this.state.y[name]==='') {
+    this.setState(
+      // (state)=>
+      {
+      // let row=state.Error_obj
+      // row[name]="Requires valid entry"
+      // QTYError: "Requires valid entry",
+      Error_obj: { ...this.state.Error_obj, [name]: "Requires valid entry"},
+      error: { ...this.state.error, [name]: true},
+      // error: true
+      // return {Error_obj:row, error: true}
     });
   }
   else {
-    isError = false;
     this.setState({
-      QTYError: this.state.originalrow.QTY,
-      error: false,
+      // QTYError: this.state.originalrow[name],
+      Error_obj: { ...this.state.Error_obj, [name]: this.state.originalrow[name]},
+      error: { ...this.state.error, [name]: false},
+      // error: false,
     });
   }
-  return isError;
   };
 
   handleClose = (name) => {
     if (name === 'cancel') {
       this.setState({
         open: false,
-        QTYError: "",
-        error: false,
+        Error_obj: "",
+        error: "",
       });
     }
-    if (!this.state.error && name === 'confirm') {
+    if (!this.state.error['ITEM NAME'] && !this.state.error['COMPANY'] && 
+    !this.state.error['PACK'] && !this.state.error['EXPIRY'] &&
+    !this.state.error['QTY'] && !this.state.error['MRP'] && name === 'confirm') {
         this.setState({
           open: false,
-          QTYError: "",
-          error: false,
+          Error_obj: "",
+          error: "",
         });
         this.setState({
           y: { ...this.state.y, verified: true }
@@ -101,11 +108,10 @@ class FormDialog extends React.Component {
           ...this.state.y,
           [e.target.name]: e.target.value.toUpperCase()
         }
-      }, () => {this.validate()})
+      }, () => {this.validate(name)})
   };
   render() {
     const { classes } = this.props;
-    console.log(this.state.QTYError)
     return (
       <div>
         <Dialog
@@ -132,7 +138,10 @@ class FormDialog extends React.Component {
                 name="ITEM NAME"
                 hintText="ITEM NAME"
                 floatingLabelText="ITEM NAME"
+                helperText={this.state.Error_obj['ITEM NAME']}
+                error={this.state.error['ITEM NAME']}
                 onChange={e => this.change(e, "ITEM NAME")}
+                placeholder={this.state.originalrow['ITEM NAME']}
                 value={this.state.y['ITEM NAME']}
                 floatingLabelFixed
               />
@@ -142,6 +151,9 @@ class FormDialog extends React.Component {
                 name="COMPANY"
                 hintText="COMPANY"
                 floatingLabelText="COMPANY"
+                helperText={this.state.Error_obj['COMPANY']}
+                error={this.state.error.COMPANY}
+                placeholder={this.state.originalrow.COMPANY}
                 onChange={e => this.change(e, "COMPANY")}
                 value={this.state.y['COMPANY']}
                 floatingLabelFixed
@@ -152,6 +164,9 @@ class FormDialog extends React.Component {
                 name="PACK"
                 hintText="PACK"
                 floatingLabelText="PACK"
+                helperText={this.state.Error_obj['PACK']}
+                error={this.state.error.PACK}
+                placeholder={this.state.originalrow.PACK}
                 onChange={e => this.change(e, "PACK")}
                 value={this.state.y['PACK']}
                 floatingLabelFixed
@@ -162,6 +177,9 @@ class FormDialog extends React.Component {
                 name="EXPIRY"
                 hintText="EXPIRY"
                 floatingLabelText="EXPIRY"
+                helperText={this.state.Error_obj['EXPIRY']}
+                error={this.state.error.EXPIRY}
+                placeholder={this.state.originalrow.EXPIRY}
                 onChange={e => this.change(e, "EXPIRY")}
                 value={this.state.y['EXPIRY']}
                 floatingLabelFixed
@@ -172,8 +190,8 @@ class FormDialog extends React.Component {
                 name="QTY"
                 hintText="QTY"
                 floatingLabelText="QTY"
-                helperText={this.state.QTYError}
-                error={this.state.error}
+                helperText={this.state.Error_obj['QTY']}
+                error={this.state.error.QTY}
                 onChange={e => this.change(e, "QTY")}
                 placeholder={this.state.originalrow.QTY}
                 value={this.state.y['QTY']}
@@ -185,6 +203,9 @@ class FormDialog extends React.Component {
                 name="MRP"
                 hintText="MRP"
                 floatingLabelText="MRP"
+                helperText={this.state.Error_obj['MRP']}
+                error={this.state.error.MRP}
+                placeholder={this.state.originalrow.MRP}
                 onChange={e => this.change(e, "MRP")}
                 value={this.state.y['MRP']}
                 floatingLabelFixed

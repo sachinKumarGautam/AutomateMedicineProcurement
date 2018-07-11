@@ -23,8 +23,8 @@ import FormDialog from './FormDialog.jsx';
 
 function getSorting(order, orderBy) {
   return order === 'desc'
-    ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
-    : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+    ? (a, b) => (b[orderBy] <= a[orderBy] ? -1 : 1)
+    : (a, b) => (a[orderBy] <= b[orderBy] ? -1 : 1);
 }
 
 const columnData = [
@@ -133,7 +133,7 @@ let EnhancedTableToolbar = props => {
     >
       <div className={classes.title}>
           <Typography variant="title" id="tableTitle">
-            Invoice (Unverified Table)
+            Invoice (Unverified Item)
           </Typography>
       </div>
       <div className={classes.spacer} />
@@ -309,6 +309,7 @@ componentDidUpdate(prevProps) {
     const { classes, items } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, final} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, final.length - page * rowsPerPage);
+    console.log(this.state.final)
     return (
       <Paper className={classes.root} >
         <SearchBar
