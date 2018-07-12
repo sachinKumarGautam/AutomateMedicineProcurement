@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import EnhancedTable from './EnhancedTable';
 import SimpleTable from './SimpleTable';
 import Report from './Report';
+import img from './image.PNG';
 // import {CSVFileUploader} from './FileReader';
 // import Popout from 'react-popout'; 
 
@@ -19,18 +20,30 @@ import Report from './Report';
 // import PopoutWindow from 'react-popout';
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
+  // root: {
+  //   flexGrow: 1,
+  // },
+  container: {
+     display: 'grid',
+     gridTemplateColumns: 'repeat(12, 1fr)',
+     gridGap: `${theme.spacing.unit * 3}px`,
   },
   paper: {
-    height: 140,
-    width: 100,
+    // height: 140,
+    // width: 100,
+    padding: theme.spacing.unit,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    whiteSpace: 'nowrap',
+    mmarginBottom: theme.spacing.unit,
   },
-  control: {
-    padding: theme.spacing.unit * 2,
-  },
+  // control: {
+  //   padding: theme.spacing.unit * 2,
+  // },
   buttonAlign: {
-    float: 'right',
+    // float: 'right',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   button: {
     margin: theme.spacing.unit,
@@ -125,8 +138,10 @@ class TableGrid extends React.Component {
     
     return (
      <div>
+
         <div className={classes.buttonAlign} >
-        <Button variant="contained" color="secondary" className={classes.button} onClick={this.report} > Generate Mis-Match Report </Button>
+        <img src={img} />
+        <Button  color="secondary" className={classes.button} onClick={this.report} > Generate Mis-Match Report </Button>
         </div>
         <Grid container spacing={24}>
         < Report onRef={(ref)=>this.reportRef=(ref)} left={this.state.left} right={this.state.right} /> 

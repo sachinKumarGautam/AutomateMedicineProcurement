@@ -1,6 +1,5 @@
 import React from 'react';
 import CSVReader from "react-csv-reader";
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
@@ -14,11 +13,13 @@ class CSVFileUploader extends React.Component {
             ans2: [],
         }
     }
+    //***this function highlights the choose file button on first time rendering of app */
     componentDidMount(){
         var input = document.getElementById('nacho');
         input.focus();
     }
     
+    //***this function is no more working but it sorts the search result */
     getName(event) {
         console.log(event.target.value);
         if (event.target.value === '') {
@@ -36,6 +37,8 @@ class CSVFileUploader extends React.Component {
         }
 
     }
+
+    //***this function basically converts the uploaded file into Reactjs state */
     handleFiles = (files) => {
         document.getElementById('nacho').blur();
         console.log(files)
@@ -77,7 +80,7 @@ class CSVFileUploader extends React.Component {
             
 
             obj.push(res);
-            //*** here new lines are added ***//
+            //*** here new lines are added */
             var hash = [];
             var orders = obj;
             for(let i=0; i<obj.length; i++){

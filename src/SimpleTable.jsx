@@ -17,7 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon';
 import TablePagination from '@material-ui/core/TablePagination';
 import SearchBar from 'material-ui-search-bar';
-import {ResponsiveDialog} from './ResponsiveDialog';
+import ResponsiveDialog from './ResponsiveDialog';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 
@@ -51,7 +51,7 @@ let EnhancedTableToolbar = props => {
     >
       <div className={classes.title}>
       <Typography variant="title" id="tableTitle">
-             Verified Table
+             Verified Items
           </Typography>
       </div>
       <div className={classes.spacer} />
@@ -95,6 +95,10 @@ const styles = theme => ({
   },
   tableWrapper: {
     overflowX: 'auto',
+  },
+  tablecell: {
+    paddingRight: '10px',
+
   },
   row: {
     '&:nth-of-type(odd)': {
@@ -204,7 +208,7 @@ randomFunction=(rows)=>{
 }; 
 popUp=(event, n)=>{
   console.log("pop-up",n.status);
-  this.refs.children.handleClickOpen(n);
+  this.children.handleClickOpen(n);
   // this.removeRow(event, n.BATCH, n);
 };  
 handleChangePage = (event, page) => {
@@ -230,16 +234,17 @@ handleChangeRowsPerPage = event => {
           maxWidth: 800
         }}
       />
-      < ResponsiveDialog ref="children" edited = {this.randomFunction} />
+      < ResponsiveDialog onRef={(ref)=>this.children=(ref)} edited = {this.randomFunction} />
       <EnhancedTableToolbar />
       <div className={classes.tableWrapper}>
       <Table className={classes.table}>
       
         <TableHead>
           <TableRow>
-            <TableCell >Edit</TableCell>
+            
             <TableCell>Name</TableCell>
             <TableCell >Batch No.</TableCell>
+            <TableCell >QTY</TableCell>
             <TableCell >Delete</TableCell>
           </TableRow>
         </TableHead>
@@ -251,16 +256,15 @@ handleChangeRowsPerPage = event => {
             return (
               <TableRow className={classes.row} key={n.BATCH} 
               >
-                <TableCell >
-                {/* <Button variant="fab" color="secondary" aria-label="edit" className={classes.button}
-                onClick={event => this.popUp(event, n)}> */}
+                {/* <TableCell >
                 <IconButton Color='primary' onClick={event => this.popUp(event, n)}><EditIcon /></IconButton>
-                {/* </Button> */}
-                </TableCell>
+                </TableCell> */}
                 <TableCell component="th" scope="row">
                   {n['ITEM NAME']}
                 </TableCell>
                 <TableCell >{n.BATCH}</TableCell>
+               
+                <TableCell >{n.QTY}</TableCell>
                 <TableCell >
                   <IconButton Color='primary' onClick={event => this.removeRow(event, n.BATCH, n)}> <Delete/></IconButton>
                 </TableCell> 

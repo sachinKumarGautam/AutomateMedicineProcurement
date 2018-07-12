@@ -40,26 +40,57 @@ export class ResponsiveDialog extends React.Component {
     qty: 0,
     mrp: 0,
     errorText: "",
+    errorText2: "",
     error: false,
+    changed: false,
+    changed2: false,
   };
   
-  // handleChange = name => event => {
-  //   this.setState({
-  //     [name]: event.target.value,
-  //   });
-  // };
-  validate(){ 
-    var qty = this.state.changedData.QTY;
-    console.log(this.state.errorText);
-      if(qty.length>=1){
+  componentDidMount() {
+    this.props.onRef(this)
+}
+componentWillUnmount() {
+    this.props.onRef(undefined)
+}
+  
+  validate(id){ 
+    if(id==="qty"){
+      if(this.state.changedData.QTY.length<1){
         this.setState({
+          changed:true,
           errorText: this.state.data.QTY,
+        })
+      }
+      else{
+        this.setState({
+          changed:false,
+          errorText: "",
+        })
+      }
+    }
+    if(id==="pack"){
+      if(this.state.changedData.PACK.length<1){
+        this.setState({
+          changed2:true,
+          errorText2: this.state.data.PACK,
+        })
+      }
+      else{
+        this.setState({
+          changed2:false,
+          errorText2: "",
+        })
+      }
+    }
+      if(this.state.changedData.QTY.length>=1 && this.state.changedData.MRP.length>=1 && this.state.changedData.EXPIRY.length>=1 && this.state.changedData['ITEM NAME'].length>=1 && this.state.changedData.PACK.length>=1 && this.state.changedData.COMPANY.length>=1 ){
+        this.setState({
+          // errorText: '',
           error: false
         })
       }
       else{
         this.setState({
-          errorText: 'Invalid QTY.',
+          // errorText: 'Invalid value',
           error: true
         })
       }
@@ -77,31 +108,27 @@ export class ResponsiveDialog extends React.Component {
   }
   handleClickOpen = (n) => {
     
-    // console.log(item);
-    // this.refs.nameInputField.autoFocus;
-    // document.getElementById('company').focus();
+  
     this.setState({ open: true });  
     this.setState({
       data: n,
       changedData: n,
-      // batch_no: n.BATCH,
-      // item_name: n['ITEM NAME'],
-      // company: n.COMPANY,
-      // pack: n.PACK,
-      // expiry: n.EXPIRY,
-      // qty: n.QTY,
-      // mrp: n.MRP,
+    
     });
     console.log(this.state.company); 
   };
   handleClose = (name) => {
+    
     console.log(this.state.error); 
     console.log(this.state.data.status);
     if(name==='cancel'){
       this.setState({ open: false });
       this.setState({
         errorText: "",
-        error: false
+        errorText2: "",
+        error: false,
+        changed: false,
+        changed2: false,
       })
        
     }
@@ -112,15 +139,13 @@ export class ResponsiveDialog extends React.Component {
       console.log(this.state.data);
       this.setState({
         errorText: "",
-        error: false
+        errorText2: "",
+        error: false,
+        changed: false,
+        changed2: false,
       })
        
-      // this.setState((prevState) => ({
-      //   changedData:{
-      //     ...this.state.changedData, 
-      //     status: false
-      //    }
-      //  }))  
+      
       
       this.setState({changedData:{
             ...this.state.changedData, 
@@ -128,37 +153,9 @@ export class ResponsiveDialog extends React.Component {
            }}, () => {
         this.verifyRow();
       });
-          // BATCH: this.state.batch_no,
-          // ['ITEM NAME']: this.state.item_name,
-          // COMPANY: this.state.company,
-          // PACK: this.state.pack,
-          // EXPIRY: this.state.expiry,
-          // QTY: this.state.qty,
-          // MRP: this.state.mrp,
-      
-      // if(this.props.update) {
-      //   console.log("from EnhancedTable")
-      //   this.props.update(this.state.changedData) 
-      // } 
-      // if(this.props.edited) {
-      //   console.log("from SimpleTable")
-      //   this.props.edited(this.state.changedData)
-      // }
+
     }
-  
-      // {this.props.add};   
-      // this.refs.child.AddRow(this.state.data);
-      // this.props.update(this.state.data)
-   
 
-
-    // if(name=="cancel"){
-    //   this.setState((prevState) => 
-    //   ({[prevState.id] : null}))
-    //   console.log(this.state.id);
-    // }
-
-    
    
   };
   
@@ -186,6 +183,15 @@ export class ResponsiveDialog extends React.Component {
           <DialogContent>
             <DialogContentText>
             {/* <form className={classes.container} noValidate autoComplete="off"> */}
+            {/* <TextField
+          id="title"
+          value={"Please check the details:"}
+          helperText = {this.state.errorText}
+          error = {this.state.error}
+          disabled = "true"
+        margin="normal"
+        />
+        <br/> */}
             Batch No.:
         <TextField
           id="batch"
@@ -197,17 +203,17 @@ export class ResponsiveDialog extends React.Component {
                 ...this.state.changedData, 
                 BATCH: e.target.value
                }
-             })                
+             })                 
         } 
         margin="normal"
         />
        
-        {/* </form> */}
+    
         <br/>
         COMPANY:
         <TextField
           id="company"
-          // ref={focusUsernameInputField}
+        
           autoFocus={true}
           value={this.state.changedData.COMPANY}
           onChange={e=>
@@ -216,22 +222,24 @@ export class ResponsiveDialog extends React.Component {
                 ...this.state.changedData, 
                 COMPANY: e.target.value
                }
-             })                
+             }, () => { this.validate("company")})                
         } 
         margin="normal"
         />
-        {/* <br/> */}
+       
         PACK:
         <TextField
           id="pack"
           value={this.state.changedData.PACK}
+          error={this.state.changed2}
+          helperText = {this.state.errorText2}
           onChange={e=>
             this.setState({
               changedData:{
                 ...this.state.changedData, 
                 PACK: e.target.value
                }
-             })                
+             }, () => { this.validate("pack")})                 
         } 
         margin="normal"
         />
@@ -239,8 +247,6 @@ export class ResponsiveDialog extends React.Component {
         ITEM_NAME:      
         <TextField
           id="name"
-          // label={this.state.item_name}
-          // className={classes.textField}
           value={this.state.changedData['ITEM NAME']}
           onChange={e=>
             this.setState({
@@ -248,7 +254,7 @@ export class ResponsiveDialog extends React.Component {
                 ...this.state.changedData, 
                 ['ITEM NAME']: e.target.value
                }
-             })                
+             }, () => { this.validate("name")})                 
         } 
           margin="normal"
           width = 'auto'
@@ -264,7 +270,7 @@ export class ResponsiveDialog extends React.Component {
                 ...this.state.changedData, 
                 EXPIRY: e.target.value
                }
-             })                
+             }, () => { this.validate("expiry")})                 
         } 
         margin="normal"
         />
@@ -274,14 +280,14 @@ export class ResponsiveDialog extends React.Component {
           id="qty"
           value={this.state.changedData.QTY}
           helperText = {this.state.errorText}
-          error = {this.state.error}
+          error = {this.state.changed}
           onChange={e=>
             this.setState({
               changedData:{
                 ...this.state.changedData, 
                 QTY: e.target.value
                }
-             }, () => { this.validate()})                
+             }, () => { this.validate("qty")})                
         } 
         margin="normal"
         />
@@ -296,7 +302,7 @@ export class ResponsiveDialog extends React.Component {
                 ...this.state.changedData, 
                 MRP: e.target.value
                }
-             })                
+             }, () => { this.validate("mrp")})                  
         } 
         margin="normal"
         />
@@ -324,4 +330,4 @@ ResponsiveDialog.propTypes = {
   // add: PropTypes.func
 };
 
-//export default withMobileDialog()(ResponsiveDialog);
+export default withStyles(styles)(ResponsiveDialog);

@@ -19,18 +19,18 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import CSVFileUploader from './FileReader';
-import {ResponsiveDialog} from './ResponsiveDialog';
+import ResponsiveDialog from './ResponsiveDialog';
 import SearchBox from './SearchBox';
 import SearchBar from 'material-ui-search-bar';
 let counter = 0;
 
-
+//***this will sort the column */
 function getSorting(order, orderBy) {
   return order === 'desc'
     ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
     : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
 }
-
+//***this const have column headers and id value must be same as column headers in invoice */
 const columnData = [
   { id: 'ITEM NAME', numeric: false, disablePadding: true, label: 'Item Name' },
   { id: 'COMPANY', numeric: false, disablePadding: false, label: 'Company' },
@@ -135,25 +135,10 @@ let EnhancedTableToolbar = props => {
     >
       <div className={classes.title}>
       <Typography variant="title" id="tableTitle">
-            Invoice (Unverified Table)
+            Invoice (Unverified Items)
           </Typography>
       </div>
       <div className={classes.spacer} />
-      {/* <div className={classes.actions}>
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </div> */}
     </Toolbar>
   );
 };
@@ -176,6 +161,13 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  rowColor: {
+    backgroundColor: '#009999',
+  },
+  tablecell: {
+    paddingRight: '10px',
+
+  },
 });
 
 class EnhancedTable extends React.Component {
@@ -197,10 +189,7 @@ class EnhancedTable extends React.Component {
   
     
   }
-  // componentDidMount(){
-  //   var input = document.getElementById('nacho');
-  //   input.focus();
-  // }
+  //***this function search the rows based on the input in searchbox */
   getRow(name) {
     console.log(name);
     var size = name.length;
@@ -221,6 +210,8 @@ class EnhancedTable extends React.Component {
     }
    
   } 
+
+  //***this function is invoked when someone deletes the row from verified items table and qty is added  */
   componentDidUpdate(prevProps){
     if(this.props.add!==prevProps.add){
       for(let i=0; i<this.state.ans.length; i++){
@@ -236,16 +227,9 @@ class EnhancedTable extends React.Component {
         }
       }
     }
-
-  //   if(this.props.obj!==prevProps.obj){
-  //     this.setState({
-  //       obj: this.props.obj,
-  //       data: this.props.obj,
-  //       ans: this.props.obj,
-  //       modifyData: this.props.obj,
-  //     })
-  //   }
   }
+
+  //***this function is passed as props to ResponsiveDialog and the modified value is passed to TableGrid from here */
   selection(n){ 
     this.setState({
       selectrows:n,
@@ -265,10 +249,10 @@ class EnhancedTable extends React.Component {
         })
       }
     }
-
     this.props.modify(n);
-    
-  }                   
+  }
+  
+  //***this function changes the order of sorting and on which property sorting is to be applied */
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -280,6 +264,7 @@ class EnhancedTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
+  //***this function is dummy not used anymore */
   handleSelectAllClick = (event, checked) => {
     if (checked) {
       this.setState({ selected: this.state.data.map(n => n.id) });
@@ -288,6 +273,7 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   };
 
+  //***this function is used to open Responsive Dialog's method 'handleClickOpen' corresponding to each row */
   handleClick = (event, id, n) => { 
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
@@ -297,21 +283,11 @@ class EnhancedTable extends React.Component {
     console.log(this.state.modifyData);
     for(let i=0; i<this.state.modifyData.length; i++){
       if(n.BATCH===this.state.modifyData[i].BATCH)
-      this.refs.child.handleClickOpen(this.state.modifyData[i]);
+      this.child.handleClickOpen(this.state.modifyData[i]);
     } 
   };
   
-  openDialog=(event)=>{
-    console.log(event.which);
-    var code = event.keyCode || event.which;
-    if(code === 13) { //13 is the enter keycode
-      const { selected, ans } = this.state;
-      let newSelected = [];
-      newSelected.push(ans[0].BATCH);
-      this.setState({ selected: newSelected });
-        this.refs.child.handleClickOpen(ans[0]);
-    }   
-  }
+
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -331,10 +307,8 @@ class EnhancedTable extends React.Component {
     
     return (
       <div>
-        
-        <Paper className={classes.root}>
+         <Paper className={classes.root}>
           <SearchBar
-            // id = 'nacho'
             onClick={() => console.log('entered')}
             onChange={this.getRow.bind(this)}
             onRequestSearch={() => console.log('onRequestSearch')}
@@ -344,7 +318,8 @@ class EnhancedTable extends React.Component {
               width: '100%',
             }}
           />
-          < ResponsiveDialog ref="child" update={this.selection.bind(this)} />
+           {/* this way of creating a ref to the child component Responsive Dialog  */}
+          < ResponsiveDialog onRef={(ref)=>this.child=(ref)} update={this.selection.bind(this)} />
 
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
@@ -370,14 +345,13 @@ class EnhancedTable extends React.Component {
 
                       <TableRow
                         hover
-                        onKeyPress={this.openDialog.bind(this)}
-                        // onKeydown={this.openDialog.bind(this)}
                         onClick={event => this.handleClick(event, n.BATCH, n)}
                         role="checkbox"
                         aria-checked={isSelected}
                         tabIndex={-1}
                         key={n.id}
                         selected={isSelected} 
+                        className={n.QTY===0 ? classes.rowColor:""}
                       >
                       
                         <TableCell padding="checkbox">
@@ -425,7 +399,7 @@ class EnhancedTable extends React.Component {
           />
         </Paper>
 
-        
+        {/* this function is used to choose csv invoice  */}
         <CSVFileUploader
           onDataLoaded={(obj) => {
             this.setState({
@@ -437,10 +411,9 @@ class EnhancedTable extends React.Component {
               this.props.lefty(obj);
             }
           );
-            // this.props.lefty(obj);
           }
           
-          }
+             }
           
         />
       </div>
