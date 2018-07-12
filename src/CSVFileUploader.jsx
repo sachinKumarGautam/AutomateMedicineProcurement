@@ -76,14 +76,16 @@ class CSVFileUploader extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className="container">
+            <div className="container" >
+               <div className={classes.buttonalign}>
                 <CSVReader
                     cssClass="react-csv-input"
                     onFileLoaded={this.handleFiles}
                     // autofocus={true}
                     inputId="input"
                 />
-                <img src={logo} width="100" height="50" paddingLeft="800px"/>
+                <img src={logo} width="120" height="50" paddingLeft="800px"/>
+                </div>
                 {/* <datalist id="languages">
                     {this.state.dropdownlist.map((item) => {
                         return <option key={item.BATCH} value={item}/>

@@ -25,11 +25,15 @@ const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
   },
   table: {
-    // minWidth: 350,
+    minWidth: 300,
     // height: "100px",
     // padding: "none",
+  },
+  tablecell: {
+    paddingRight: '10px',
   },
   tableWrapper: {
     overflowX: 'auto',
